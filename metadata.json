@@ -1,0 +1,5 @@
+{
+  "name": "Healthcare Compliance AI Reviewer",
+  "description": "An AI-powered tool to analyze healthcare-related content (like marketing materials or user manuals) against industry regulations (FDA, HIPAA, FTC) to identify and correct compliance issues.",
+  "requestFramePermissions": []
+}
