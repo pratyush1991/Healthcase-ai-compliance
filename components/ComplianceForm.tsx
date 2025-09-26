@@ -1,15 +1,10 @@
 import React, { useState, useCallback, useRef } from 'react';
-import mammoth from 'mammoth';
-import * as pdfjsLib from 'pdfjs-dist';
 import { ComplianceStandard, Workflow, Region } from '../types.ts';
 import { COMPLIANCE_OPTIONS, WORKFLOW_OPTIONS, REGION_OPTIONS, DEMO_CONTENT } from '../constants.ts';
 import Spinner from './Spinner.tsx';
 import UploadIcon from './icons/UploadIcon.tsx';
 import DocumentTextIcon from './icons/DocumentTextIcon.tsx';
 import KeyIcon from './icons/KeyIcon.tsx';
-
-// Configure the worker for pdf.js using a stable, public CDN
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.mjs`;
 
 export interface FormState {
   apiKey: string;
@@ -55,10 +50,17 @@ const ComplianceForm: React.FC<ComplianceFormProps> = ({ onFormSubmit, isLoading
       if (fileExtension === 'txt') {
         text = await file.text();
       } else if (fileExtension === 'docx') {
+        // Dynamically import mammoth.js only when needed
+        const mammoth = await import('mammoth');
         const arrayBuffer = await file.arrayBuffer();
         const result = await mammoth.extractRawText({ arrayBuffer });
         text = result.value;
       } else if (fileExtension === 'pdf') {
+        // Dynamically import pdf.js only when needed
+        const pdfjsLib = await import('pdfjs-dist');
+        // Configure the worker using a stable, public CDN
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.mjs`;
+        
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const numPages = pdf.numPages;
