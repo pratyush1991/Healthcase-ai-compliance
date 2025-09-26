@@ -8,8 +8,8 @@ import UploadIcon from './icons/UploadIcon.tsx';
 import DocumentTextIcon from './icons/DocumentTextIcon.tsx';
 import KeyIcon from './icons/KeyIcon.tsx';
 
-// Configure the worker for pdf.js
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://esm.sh/pdfjs-dist@4.4.168/build/pdf.worker.mjs`;
+// Configure the worker for pdf.js using a stable, public CDN
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.mjs`;
 
 export interface FormState {
   apiKey: string;
